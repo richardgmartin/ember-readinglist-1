@@ -7,16 +7,32 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <script type="text/x-handlebars">
-    <h2>Welcome to Ember.js</h2>
-
-    {{outlet}}
+  <script type="text/x-handlebars" data-template-name='application'>
+    <div class='container'>
+      <h1>Reading List</h1>
+      {{outlet}}
+    </div>
   </script>
 
-  <script type="text/x-handlebars" id="index">
-    <ul>
-    {{#each item in model}}
-      <li>{{item}}</li>
+  <script type="text/x-handlebars" data-template-name="index">
+    <ul class='list-unstyled'>
+    {{#each}}
+      <li class='row'>
+        <div class='col-sm-3'>
+          <a {{bind-attr href='url'}} target='_blank'>
+            <img {{bind-attr src='image'}} />
+          </a>
+          <p class='text-center rating'><strong>{{rating}}</strong>/5</p>
+        </div>
+
+        <div class='col-sm-9'>
+          <h3>{{title}}</h3>
+          <p class='text-muted'><em>Written by {{author}}</em></p>
+          <div>
+            <p>{{review}}</p>
+          </div>
+        </div>
+      </li>
     {{/each}}
     </ul>
   </script>
