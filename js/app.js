@@ -1,7 +1,7 @@
 App = Ember.Application.create();
 
 App.Router.map(function() {
-  // put your routes here
+  this.resource('book', {path: 'books/:book_id'});
 });
 
 App.IndexRoute = Ember.Route.extend({
@@ -10,10 +10,30 @@ App.IndexRoute = Ember.Route.extend({
   }
 });
 
+// No need to explicitly code BookRoute since it is created by Ember by default after Route is declared!
+
+// App.BookRoute = Ember.Route.extend({
+//   model: function(params){
+//     return this.store.find('book', params.book_id);
+//   }
+// });
+
+// Define BooksController to sort book list by title
+
+App.BooksController = Ember.ArrayController.extend({
+  sortProperties: ['title']
+});
+
 // Define Fixture Adapter for Book
 
 App.ApplicationAdapter = DS.FixtureAdapter.extend({
+});
 
+App.BookDetailsComponent = Ember.Component.extend({
+  classNameBindings: ['ratingClass'],
+  ratingClass: function() {
+    return 'rating-' + this.get('book.rating');
+  }.property('book.rating')
 });
 
 // Define Ember Data Object for Book
