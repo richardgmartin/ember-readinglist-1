@@ -2,13 +2,23 @@ App = Ember.Application.create();
 
 App.Router.map(function() {
   this.resource('book', {path: 'books/:book_id'});
+  this.resource('genre', {path: '/genres/:genre_id'})
 });
 
 App.IndexRoute = Ember.Route.extend({
   model: function() {
-    return this.store.findAll ('book');
+    return Ember.RSVP.hash({
+      books: this.store.findAll('book'),
+      genres: this.store.findAll('genre')
+    });
+  },
+  setupController: function(controller, model){
+    controller.set('books', model.books),
+    controller.set('genres', model.genres)
   }
 });
+
+App.IndexController = Ember.Controller.extend({});
 
 // No need to explicitly code BookRoute since it is created by Ember by default after Route is declared!
 

@@ -18,15 +18,39 @@
     <ol class='breadcrumb'>
       <li class='active'>Books</li>
     </ol>
-    <ul class='list-unstyled'>
-      {{render 'books' this}}
-    </ul>
+
+    <div class='row'>
+      <div class='col-sm-8'>
+        {{render 'books' books}}
+      </div>
+      <div class='col-sm-4'>
+        {{render 'genres' genres}}
+      </div>
+    </div>
   </script>
 
   <script type='text/x-handlebars' data-template-name='books'>
     {{#each}}
       {{book-details book=this tag='li' class='row'}}
     {{/each}}
+  </script>
+
+  <script type='text/x-handlebars' data-template-name='genres'>
+    <h2>Genres</h2>
+    <ul class='list-unstyled'>
+      {{#each}}
+        <li>{{#link-to 'genre' this class='label label-primary'}}{{name}}{{/link-to}}</li>
+      {{/each}}
+    </ul>
+  </script>
+
+  <script type='text/x-handlebars' data-template-name='genre'>
+    <ol class='breadcrumb'>
+      <li>{{#link-to 'index'}}Books{{/link-to}}</li>
+      <li class='active'>{{name}}</li>
+    </ol>
+
+    {{render 'books' books}}
   </script>
 
   <script type="text/x-handlebars" data-template-name="book">
