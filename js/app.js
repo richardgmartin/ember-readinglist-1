@@ -34,6 +34,12 @@ App.BooksController = Ember.ArrayController.extend({
   sortProperties: ['title']
 });
 
+// Define GenresController to sort genre list by name
+
+App.GenresController = Ember.ArrayController.extend({
+  sortProperties: ['name']
+});
+
 // Define Fixture Adapter for Book
 
 App.ApplicationAdapter = DS.FixtureAdapter.extend({

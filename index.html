@@ -30,9 +30,11 @@
   </script>
 
   <script type='text/x-handlebars' data-template-name='books'>
-    {{#each}}
-      {{book-details book=this tag='li' class='row'}}
-    {{/each}}
+    <ul class='list-unstyled'>
+      {{#each}}
+        {{book-details book=this tag='li' class='row'}}
+      {{/each}}
+    </ul>
   </script>
 
   <script type='text/x-handlebars' data-template-name='genres'>
@@ -75,7 +77,7 @@
       <div>
         <p>{{book.review}}</p>
       </div>
-      <span class='label label-primary'>{{book.genre.name}}</span>
+      <span>{{#link-to 'genre' book.genre class='label label-primary'}}{{book.genre.name}}{{/link-to}}</span>
     </div>
   </script>
 
