@@ -2,7 +2,10 @@ App = Ember.Application.create();
 
 App.Router.map(function() {
   this.resource('book', {path: 'books/:book_id'});
-  this.resource('genre', {path: '/genres/:genre_id'})
+  this.resource('genre', {path: '/genres/:genre_id'});
+  this.resource('reviews', function() {
+    this.route('new');
+  });
 });
 
 App.IndexRoute = Ember.Route.extend({
@@ -13,8 +16,8 @@ App.IndexRoute = Ember.Route.extend({
     });
   },
   setupController: function(controller, model){
-    controller.set('books', model.books),
-    controller.set('genres', model.genres)
+    controller.set('books', model.books);
+    controller.set('genres', model.genres);
   }
 });
 
@@ -38,6 +41,46 @@ App.BooksController = Ember.ArrayController.extend({
 
 App.GenresController = Ember.ArrayController.extend({
   sortProperties: ['name']
+});
+
+// Define new reviews route object - ReviewsNewRoute
+
+App.ReviewsNewRoute = Ember.Route.extend({
+  model: function() {
+    return Ember.RSVP.hash({
+      book: this.store.createRecord('book'),
+      genres: this.store.findAll('genre')
+    });
+  },
+  setupController: function(controller, model){
+    controller.set('model', model.book);
+    controller.set('genres', model.genres);
+  },
+  actions: {
+    willTransition: function(transition) {
+      if(this.currentModel.book.get('isNew')) {
+        if(confirm("Are you sure you want to abandon progress?")) {
+          this.currentModel.book.destroyRecord();
+        } else {
+          transition.abort();
+        }
+      }
+    }
+  }
+});
+
+// Define new reviews controller - ReviewsNewController
+
+App.ReviewsNewController = Ember.Controller.extend({
+  ratings: [5,4,3,2,1],
+  actions: {
+    createReview: function() {
+      var controller = this;
+      this.get('model').save().then(function() {
+        controller.transitionToRoute('index');
+      });
+    }
+  }
 });
 
 // Define Fixture Adapter for Book
